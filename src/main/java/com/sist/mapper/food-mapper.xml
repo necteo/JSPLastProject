@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.food-mapper">
+	<select id="foodListData" resultType="FoodVO" parameterType="hashmap">
+		SELECT fno, name, type, address, poster, likecount, replycount, num
+		FROM (SELECT fno, name, type, address, poster, likecount, replycount, rownum num
+			  FROM (SELECT fno, name, type, address, poster, likecount, replycount
+			  		FROM menupan_food ORDER BY fno))
+		WHERE num BETWEEN #{start} AND #{end}	
+	</select>
+	
+	<select id="foodTotalPage" resultType="int">
+		SELECT CEIL(COUNT(*) / 12) FROM menupan_food
+	</select>
+</mapper>
