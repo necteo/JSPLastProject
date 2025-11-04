@@ -1,7 +1,14 @@
 package com.sist.model;
 
+import java.util.List;
+import java.util.StringTokenizer;
+
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
+import com.sist.dao.MainDAO;
+import com.sist.vo.ChefVO;
+import com.sist.vo.FoodVO;
+import com.sist.vo.RecipeVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -213,12 +220,63 @@ import jakarta.servlet.http.HttpServletResponse;
  *     
  *     ** Controller 제어 => .xml
  *        => DI / AOP
+ *        
+ *        
+ *        
+ *        화면
+ *         => 데이터 확인
+ *         ------------------
+ *         => mapper 작업
+ *         => DAO
+ *         ------------------ 오라클에서 데이터 읽기
+ *         => Model
+ *         ------------------ 브라우저로 전송
+ *         => JSP
+ *         ------------------ 화면 출력
  */
 @Controller
 public class MainModel {
 	
   @RequestMapping("main/main.do")
   public String main_main(HttpServletRequest request, HttpServletResponse response) {
+	  // 1. 메인 맛집
+	  FoodVO vo = MainDAO.mainTopData();
+	  request.setAttribute("mainVO", vo);
+	  
+	  // 2. HIT가 많은 맛집 => 4
+	  List<FoodVO> hList = MainDAO.mainHitTop4();
+	  for (FoodVO fvo : hList) {
+		  String addr = fvo.getAddress();
+		  addr = addr.substring(0, addr.indexOf(" "));
+		  fvo.setAddress(addr.trim());
+	  }
+	  request.setAttribute("hList", hList);
+	  // 3. LIKE가 많은 맛집 => 4
+	  List<FoodVO> lList = MainDAO.mainLikeTop4();
+	  for (FoodVO fvo : lList) {
+		  String addr = fvo.getAddress();
+		  addr = addr.substring(0, addr.indexOf(" "));
+		  fvo.setAddress(addr.trim());
+	  }
+	  request.setAttribute("lList", lList);
+	  
+	  // 오늘의 쉐프 / 인기 있는 레시피 5
+	  ChefVO cvo = MainDAO.mainTopChefData();
+	  request.setAttribute("cvo", cvo);
+	  List<RecipeVO> rList = MainDAO.mainRecipeTop5();
+	  for (RecipeVO rvo : rList) {
+		  String data = rvo.getPoster();
+		  data = data.substring(data.indexOf("recipe/") + 7, data.indexOf("recipe/") + 17);
+//		  System.out.println("data:" + data);
+		  StringTokenizer st = new StringTokenizer(data, "/");
+		  rvo.setYear(st.nextToken());
+		  rvo.setMonth(st.nextToken());
+		  rvo.setDay(st.nextToken());
+	  }
+	  request.setAttribute("rList", rList);
+	  
+	  // 오늘의 뉴스
+	  // Cookie
 	  // main_jsp => 화면 
 	  request.setAttribute("main_jsp", "../main/home.jsp");
 	  return "../main/main.jsp";

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.goods-mapper">
+  <!-- 상품 목록 (전체 목록) 
+  NO                                                                                                                      NUMBER(38)
+ GOODS_NAME                                                                                                              VARCHAR2(4000)
+ GOODS_SUB                                                                                                               VARCHAR2(4000)
+ GOODS_PRICE                                                                                                             VARCHAR2(26)
+ GOODS_DISCOUNT                                                                                                          NUMBER(38)
+ GOODS_FIRST_PRICE                                                                                                       VARCHAR2(4000)
+ GOODS_DELIVERY                                                                                                          VARCHAR2(4000)
+ GOODS_POSTER                                                                                                            VARCHAR2(4000)
+ HIT                
+  -->
+  <select id="goodsListData" resultType="GoodsVO" parameterType="hashmap">
+    SELECT no, goods_name, goods_sub, goods_price, goods_discount, goods_poster, hit, num
+    FROM (SELECT no, goods_name, goods_sub, goods_price, goods_discount, goods_poster, hit, rownum num
+    	  FROM (SELECT no, goods_name, goods_sub, goods_price, goods_discount, goods_poster, hit
+    	  		FROM ${goods} ORDER BY no))
+    WHERE num BETWEEN #{start} AND #{end}
+  </select>
+  
+  <select id="goodsTotalPage" resultType="int" parameterType="hashmap">
+     SELECT CEIL(COUNT(*) / 12)
+     FROM ${goods}
+  </select>
+  
+  <update id="goodsHitIncrement" parameterType="hashmap">
+  	UPDATE ${goods} 
+  	SET hit = hit + 1
+  	WHERE no = #{no}
+  </update>
+  
+  <select id="goodsDetailData" resultType="GoodsVO" parameterType="hashmap">
+  	SELECT * FROM ${goods}
+  	WHERE no = #{no}
+  </select>
+</mapper>

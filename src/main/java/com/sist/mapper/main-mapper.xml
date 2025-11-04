@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   main 페이지
+   | 목록 출력 => 페이지
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.main-mapper">
+  <select id="mainTopData" resultType="FoodVO">
+    SELECT *
+    FROM (SELECT * FROM menupan_food 
+    	  ORDER BY DBMS_RANDOM.VALUE)
+    WHERE ROWNUM = 1
+  </select>
+  
+  <select id="mainHitTop4" resultType="FoodVO">
+    SELECT fno, poster, name, theme, hit, likecount, replycount, type, address, content
+    FROM (SELECT fno, poster, name, theme, hit, likecount, replycount, type, address, content
+    	  FROM menupan_food
+    	  ORDER BY hit DESC)
+    WHERE rownum &lt;= 4
+  </select>
+  
+  <select id="mainLikeTop4" resultType="FoodVO">
+    SELECT fno, poster, name, theme, hit, likecount, replycount, type, address, content
+    FROM (SELECT fno, poster, name, theme, hit, likecount, replycount, type, address, content
+    	  FROM menupan_food
+    	  ORDER BY likecount DESC)
+    WHERE rownum &lt;= 4
+  </select>
+  
+  <select id="mainTopChefData" resultType="ChefVO">
+    SELECT no, chef poster, poster chef
+    FROM (SELECT * FROM chef 
+    	  ORDER BY DBMS_RANDOM.VALUE)
+    WHERE ROWNUM = 1
+  </select>
+  
+  <select id="mainRecipeTop5" resultType="RecipeVO">
+    SELECT no, poster, title
+    FROM (SELECT no, poster, title
+    	  FROM recipe
+    	  ORDER BY no DESC)
+    WHERE rownum &lt;= 5
+  </select>
+</mapper>

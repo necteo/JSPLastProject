@@ -12,4 +12,18 @@
 	<select id="foodTotalPage" resultType="int">
 		SELECT CEIL(COUNT(*) / 12) FROM menupan_food
 	</select>
+	
+	<!-- 상세보기 -->
+	<sql id="where-fno">
+	  WHERE fno = #{fno}
+	</sql>
+	<update id="foodHitIncrement" parameterType="int">
+	  UPDATE menupan_food
+	  SET hit = hit + 1
+	  <include refid="where-fno"/>
+	</update>
+	<select id="foodDetailData" resultType="FoodVO">
+	  SELECT * FROM menupan_food
+	  <include refid="where-fno"/>
+	</select>
 </mapper>
