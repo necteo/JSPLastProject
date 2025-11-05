@@ -46,38 +46,40 @@
     <section class="archive-area section_padding_80">
         <div class="container">
             <div class="row board_row">
+            <form action="../board/insert_ok.do" method="post">
               <table class="table">
                 <tr>
                   <th class="text-center">이름</th>
                   <td>
-                    <input type="text" name="name" class="form-control input-sm">
+                    <input type="text" name="name" class="form-control input-sm" required>
                   </td>
                 <tr>
                 <tr>
                   <th class="text-center">제목</th>
                   <td>
-                    <input type="text" name="subject" class="form-control input-sm">
+                    <input type="text" name="subject" class="form-control input-sm" required>
                   </td>
                 <tr>
                 <tr>
                   <th class="text-center">내용</th>
                   <td>
-                    <textarea rows="10" cols="50" class="form-control" name="content"></textarea>
+                    <textarea rows="10" cols="50" class="form-control" name="content" required></textarea>
                   </td>
                 <tr>
                 <tr>
                   <th class="text-center">비밀번호</th>
                   <td>
-                    <input type="password" name="pwd" class="form-control input-sm" style="width: 150px">
+                    <input type="password" name="pwd" class="form-control input-sm" style="width: 150px" required>
                   </td>
                 <tr>
                 <tr>
                   <td colspan="2" class="text-center">
-                    <input type="button" class="btn btn-sm btn-mint" value="글쓰기">
+                    <input type="submit" class="btn btn-sm btn-mint" value="글쓰기">
                     <input type="button" class="btn btn-sm btn-pink" value="취소" onclick="javascript:history.back()">
                   </td>
                 </tr>
               </table>
+              </form>
             </div>
         </div>
     </section>

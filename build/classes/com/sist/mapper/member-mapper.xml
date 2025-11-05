@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.member-mapper">
+  <!-- 
+  	  1. 회원가입
+  	  2. 로그인
+  	  3. 아이디중복 체크
+  	  ================== 목표
+  	  4. 아이디 찾기
+  	  5. 비밀번호 찾기 ===== JavaMail
+  	  ==============
+  	  6. 회원수정
+  	  7. 회원탈퇴
+  	  8. 비밀번호 변경
+  	  =============== 마이페이지
+  	  9. 옵션 : 카카오 로그인 : 자바스크립트 => Spring
+   -->
+</mapper>

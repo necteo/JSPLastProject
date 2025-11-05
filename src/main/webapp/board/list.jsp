@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,6 +62,22 @@
 	              <th class="text-center" width="20%">작성일</th>
 	              <th class="text-center" width="10%">조회수</th>
 	            </tr>
+	            <c:set var="count" value="${count}"/>
+	            <c:forEach var="vo" items="${list}">
+		            <tr>
+		              <td class="text-center" width="10%">${count}</td>
+		              <td width="45%">
+		                <a href="../board/detail.do?no=${vo.no}&page=${curpage}">${vo.subject}</a>
+		                <c:if test="${today == vo.dbday}">
+		                  &nbsp;<sup><img src="../board/images/new.gif"></sup>
+		                </c:if>
+		              </td>
+		              <td class="text-center" width="15%">${vo.name}</td>
+		              <td class="text-center" width="20%">${vo.dbday}</td>
+		              <td class="text-center" width="10%">${vo.hit}</td>
+		            </tr>
+		            <c:set var="count" value="${count - 1}"/>
+	            </c:forEach>
 	          </table>
 	          <table class="table">
 	            <tr>
@@ -72,7 +89,9 @@
 	                <input type="button" class="btn-sm btn-pink" value="검색">
 	              </td>
 	              <td class="text-right">
-	                0 page / 0 pages
+	                <a href="../board/list.do?page=${curpage > 1 ? curpage - 1 : curpage}" class="btn btn-sm btn-pink" >이전</a>
+	                ${curpage} page / ${totalpage} pages
+	                <a href="../board/list.do?page=${curpage < totalpage ? curpage + 1 : curpage}" class="btn btn-sm btn-mint" >다음</a>
 	              </td>
 	            </tr>
 	          </table>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.board-mapper">
+  <!-- 
+  	 1. 목록
+  	 2. 추가
+  	 3. 상세보기
+  	 =========
+  	 4. 수정
+  	 5. 삭제 ======== 댓글삭제
+  	 ========= Ajax
+  	 6. 댓글(대댓글)
+  	 7. 수정
+  	 8. 삭제
+  	 9. 추가
+  	 =========
+  	   업체 : 목록(페이징) , 상제보기 , CRUD
+  	   							 => 댓글 / 게시판
+  	   		 화면 출력 : Ajax
+  	   				   Vue/React
+   -->
+   <!-- 목록 -->
+   <select id="boardListData" resultType="BoardVO" parameterType="int">
+     SELECT no, subject, name, TO_CHAR(regdate, 'YYYY-MM-DD') dbday, hit, replycount
+     FROM mvcBoard
+     ORDER BY no DESC
+     OFFSET #{start} ROWS FETCH NEXT 10 ROWS ONLY
+   </select>
+   <select id="boardTotalPage" resultType="int">
+     SELECT COUNT(*)
+     FROM mvcBoard
+   </select>
+   
+   <!-- 추가 -->
+   <insert id="boardInsert" parameterType="BoardVO">
+     INSERT INTO mvcBoard(no, name, subject, content, pwd)
+     VALUES(mb_no_seq.nextval, #{name}, #{subject}, #{content}, #{pwd})
+   </insert>
+   
+   <!-- 상세보기 -->
+   <update id="boardHitIncrement" parameterType="int">
+     UPDATE mvcBoard
+     SET hit = hit + 1
+     WHERE no = #{no}
+   </update>
+   <select id="boardDetailData" resultType="BoardVO" parameterType="int">
+     SELECT no, name, subject, content, hit, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS') dbday, replycount
+     FROM mvcBoard
+     WHERE no = #{no}
+   </select>
+      
+   <!-- 
+   	  삭제
+    -->
+   <select id="boardGetPassword" resultType="string" parameterType="int">
+     SELECT pwd FROM mvcBoard
+     WHERE no = #{no}
+   </select>
+   <delete id="boardDelete" parameterType="int">
+     DELETE FROM mvcBoard
+     WHERE no = #{no}
+   </delete>
+   
+   <!-- 
+   	  수정 : CRUD
+   	  		Create Read Update Delete
+   	  		  |		|
+   	  		 Insert Select
+    -->
+   <update id="boardUpdate" parameterType="BoardVO">
+     UPDATE mvcBoard
+     SET name = #{name}, subject = #{subject}, content = #{content}
+     WHERE no = #{no}
+   </update>
+      
+</mapper>
