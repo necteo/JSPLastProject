@@ -7,15 +7,78 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="../css/table.css">
-
+<link rel="stylesheet" href="../shadow/css/shadowbox.css">
 <style type="text/css">
  .join_row{
   margin: 0px auto;
   width: 900px;
 } 
-
 </style>
-
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="../shadow/js/shadowbox.js"></script>
+<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript">
+Shadowbox.init({
+	players: ['iframe']
+})
+$(function() {
+	$('#idBtn').click(function() {
+		Shadowbox.open({
+			content: '../member/idcheck.do',
+			player: 'iframe',
+			width: 500,
+			heigth: 350,
+			title: '아이디 중복체크'
+		})
+	})
+	$('#postBtn').on('click', function() {
+		new daum.Postcode({
+			oncomplete: function(data) {
+				$('#post').val(data.zonecode)
+				$('#addr1').val(data.address)
+			}
+		}).open()
+	})
+	
+	$('#joinBtn').click(function() {
+		let id = $('#join_id').val()
+		if (id.trim() === '') {
+			alert('아이디 중복체크를 하세요')
+			return
+		}
+		let pwd1 = $('#pwd1').val()
+		if (pwd1.trim() === '') {
+			$('#pwd1').focus()
+			return
+		}
+		let pwd2 = $('#pwd2').val()
+		if (pwd1 !== pwd2) {
+			alert('비밀번호를 틀립니다')
+			$('#pwd2').val('')
+			$('#pwd2').focus()
+			return
+		}
+		let name = $('#name').val()
+		if (name.trim() === '') {
+			$('#name').focus()
+			return
+		}
+		let day = $('#birthday').val()
+		if (day.trim() === "") {
+			alert('생년월일을 선택하세요')
+			return
+		}
+		let post = $('#post').val()
+		if (post.trim() === '') {
+			alert('우편번호 검색을 하세요')
+			return
+		}
+		
+		// Model로 전송
+		$('#frm').submit()
+	})
+})
+</script>
 </head>
 <body>
 <!-- ****** Breadcumb Area Start ****** -->
@@ -54,12 +117,13 @@
 			      <span class="glyphicon glyphicon-leaf"></span>
 			    </div>
 			    <div class="panel-body">
+			    <form id="frm" name="frm" method="post" action="../member/join_ok.do">
 			      <table class="table table-bordered table-hover">
 			        <tr>
 			          <th class="text-center" width="20%">ID</th>
 			          <td>
 			            <div class="form-inline">
-			              <input type="text" name="id" id="id" class="form-control input-sm" placeholder="아이디" readonly>
+			              <input type="text" name="id" id="join_id" class="form-control input-sm" placeholder="아이디" readonly>
 			              <button type="button" id="idBtn" class="btn btn-mint btn-sm">중복체크</button>
 			            </div>
 			          </td>
@@ -90,7 +154,7 @@
 			
 			        <tr>
 			          <th class="text-center">생년월일</th>
-			          <td><input type="date" name="birthday" class="form-control input-sm"></td>
+			          <td><input type="date" id="birthday" name="birthday" class="form-control input-sm"></td>
 			        </tr>
 			
 			        <tr>
@@ -144,6 +208,7 @@
 			          </td>
 			        </tr>
 			      </table>
+			      </form>
 			    </div>
 			  </div>
             </div>

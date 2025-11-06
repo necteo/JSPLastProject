@@ -100,6 +100,48 @@ button:hover {
   border: 1px solid #f5b7b1;
 }
 </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#okBtn').click(function() {
+		let id = $('#userid').val()
+		parent.frm.id.value = id
+		parent.Shadowbox.close()
+	})
+	
+	$('#checkBtn').click(function() {
+		let id = $('#userid').val()
+		if (id.trim() === '') {
+			$('#message').text('아이디를 입력하세요')
+			$('#message').attr('class', 'message error')
+			$('#message').show()
+			return;
+		}
+		// 서버 연동
+		$.ajax({
+			type: 'post',
+			url: '../member/idcheck_ok.do',
+			data: { 'id': id },
+			success: function(result) {
+				if (result == 0) {
+					$('#message').text(id + '는(은) 사용가능한 아이디입니다')
+					$('#message').attr('class', 'message success')
+					$('#message').show()
+					$('#okBtn').show()
+				} else {
+					$('#message').text(id + '는(은) 이미 사용중인 아이디입니다')
+					$('#message').attr('class', 'message error')
+					$('#message').show()
+					$('#okBtn').hide()
+				}
+			},
+			error: function(error) {
+				console.log(error)
+			}
+		})
+	})
+})
+</script>
 </head>
 <body>
 
@@ -110,6 +152,7 @@ button:hover {
     <button id="checkBtn" type="button">중복확인</button>
   </div>
   <div id="message" class="message"></div>
+  <button id="okBtn" type="button" style="display: none">확인</button>
 </div>
 
 

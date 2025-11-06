@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.reply-mapper">
+  <select id="replyListData" resultType="BoardReplyVO" parameterType="int">
+    SELECT no, bno, id, name, msg, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS') dbday
+    FROM mvcBoardReply
+    WHERE bno = #{bno}
+  </select>
+  <select id="replyCount" resultType="int" parameterType="int">
+    SELECT COUNT(*)
+    FROM mvcBoardReply
+    WHERE bno = #{bno}
+  </select>
+</mapper>

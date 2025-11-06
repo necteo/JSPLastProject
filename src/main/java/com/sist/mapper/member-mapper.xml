@@ -15,4 +15,35 @@
   	  =============== 마이페이지
   	  9. 옵션 : 카카오 로그인 : 자바스크립트 => Spring
    -->
+   <!-- id 중복체크 -->
+   <select id="memberIdCheck" resultType="int" parameterType="string">
+     SELECT COUNT(*)
+     FROM mvcMember
+     WHERE id = #{id}
+   </select>
+   
+   <!-- 회원가입 -->
+   <insert id="memberInsert" parameterType="MemberVO">
+     INSERT INTO mvcMember VALUES(
+     	#{id},
+     	#{pwd},
+     	#{name},
+     	#{sex},
+     	#{birthday},
+     	#{email},
+     	#{post},
+     	#{addr1},
+     	#{addr2},
+     	#{phone},
+     	#{content},
+     	'n',
+     	SYSDATE
+     )   
+   </insert>
+   <!-- 로그인 -->
+   <select id="memberInfoData" resultType="MemberVO" parameterType="string">
+     SELECT id, name, sex, pwd, admin, post, addr1, addr2, phone
+     FROM mvcMember
+     WHERE id = #{id}
+   </select>
 </mapper>
