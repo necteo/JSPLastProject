@@ -2,13 +2,94 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sist.mapper.reply-mapper">
   <select id="replyListData" resultType="BoardReplyVO" parameterType="int">
-    SELECT no, bno, id, name, msg, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS') dbday
+    SELECT no, bno, id, name, msg, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS') dbday, group_tab
     FROM mvcBoardReply
     WHERE bno = #{bno}
+    ORDER BY group_id DESC, group_step ASC
   </select>
   <select id="replyCount" resultType="int" parameterType="int">
     SELECT COUNT(*)
     FROM mvcBoardReply
     WHERE bno = #{bno}
   </select>
+  
+  <!-- 댓글 추가 -->
+  <insert id="replyInsert" parameterType="BoardReplyVO">
+    INSERT INTO mvcBoardReply(no, bno, id, name, msg, group_id)
+    VALUES(mr_no_seq.nextval, #{bno}, #{id}, #{name}, #{msg}, (SELECT NVL(MAX(group_id) + 1, 1) FROM mvcBoardReply))
+  </insert>
+  
+  <update id="replyUpdate" parameterType="BoardReplyVO">
+  	UPDATE mvcBoardReply
+  	SET msg = #{msg}
+  	WHERE no = #{no}  
+  </update>
+  
+  <!-- 대댓글 -->
+  <!-- 1. group_id , group_step , group_tab -->
+  <select id="replyParentInfoData" resultType="BoardReplyVO" parameterType="int">
+    SELECT group_id, group_step, group_tab
+    FROM mvcBoardReply
+    WHERE no = #{no}
+  </select>
+  <!-- 2. 답변의 순서 지정 -->
+  <update id="replyGroupStepIncrement" parameterType="BoardReplyVO">
+    UPDATE mvcBoardReply SET
+    group_step = group_step + 1
+    WHERE group_id = #{group_id} AND group_step > #{group_step}
+  </update>
+  <!-- 
+  					  gi gs gt
+  		group_id : 답변을 모아서 관리
+  		group_step : 답변 출력 = 순서
+  		group_tab : 간격
+  						gi	gs	gt
+  		AAAAAA			1	0	0
+  		  => BBBBBB		1	1	1
+  		  => KKKKKK		1	2	1
+  		CCCCCC			2	0	0
+  		  => OOOOOO		2	1	1
+  		  => DDDDDD		2	2	1
+  		    => GGGGGG	2	3	2
+   -->
+   <!-- 3. INSERT -->
+   <insert id="replyReplyInsert" parameterType="BoardReplyVO">
+     INSERT INTO mvcBoardReply(no, bno, id, name, msg, group_id, group_step, group_tab, root)
+    VALUES(mr_no_seq.nextval, #{bno}, #{id}, #{name}, #{msg}, #{group_id}, #{group_step}, #{group_tab}, #{root})
+   </insert>
+   <!-- 
+   		4. depth 증가
+    -->
+    <update id="replyDepthIncrement" parameterType="int">
+      UPDATE mvcBoardReply
+      SET depth = depth + 1
+      WHERE no = #{no}
+    </update>
+    
+    <!-- 삭제 -->
+    <!-- 1. depth, root -->
+    <select id="replyInfoData" resultType="BoardReplyVO" parameterType="int">
+      SELECT depth, root
+      FROM mvcBoardReply
+      WHERE no = #{no}
+    </select>
+    <!-- 2. 삭제
+    	 = depth > 0
+    	 = depth = 0
+     -->
+    <delete id="replyDelete" parameterType="int">
+      DELETE FROM mvcBoardReply
+      WHERE no = #{no}
+    </delete>
+    <update id="replyMsgUpdate" parameterType="int">
+      UPDATE mvcBoardReply
+      SET msg = '관리자가 삭제한 댓글입니다'
+      WHERE no = #{no}
+    </update>
+    <!-- root = depth를 감소 -->
+    <update id="replyDepthDecrement" parameterType="int">
+      UPDATE mvcBoardReply
+      SET depth = depth - 1
+      WHERE no = #{no}
+    </update>
 </mapper>
