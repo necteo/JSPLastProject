@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sist.mapper.food-mapper">
+    <sql id="select-food">
+      SELECT fno, name, type, address, poster, likecount, replycount
+    </sql>
 	<select id="foodListData" resultType="FoodVO" parameterType="hashmap">
-		SELECT fno, name, type, address, poster, likecount, replycount, num
-		FROM (SELECT fno, name, type, address, poster, likecount, replycount, rownum num
-			  FROM (SELECT fno, name, type, address, poster, likecount, replycount
-			  		FROM menupan_food ORDER BY fno))
-		WHERE num BETWEEN #{start} AND #{end}	
+	  <include refid="select-food"/>, num
+	  FROM (<include refid="select-food"/>, rownum num
+	    	FROM (<include refid="select-food"/> 
+	    	  	  FROM menupan_food ORDER BY fno))
+	  WHERE num BETWEEN #{start} AND #{end}
 	</select>
 	
 	<select id="foodTotalPage" resultType="int">
@@ -25,5 +28,87 @@
 	<select id="foodDetailData" resultType="FoodVO">
 	  SELECT * FROM menupan_food
 	  <include refid="where-fno"/>
+	</select>
+	
+	<!-- 
+		select fno, name, type, num
+		from (select fno, name, type, rownum num
+		from (select fno, name, type
+		from menupan_food WHERE address like '%마포%'
+		and (type like '%한식%' or type like '%양식%'
+		or type like '%중식%' or type like '%일식%'
+		or type like '%분식%')))
+		where rownum between 1 and 10;
+	 -->
+	<select id="foodFindData" resultType="FoodVO" parameterType="hashmap">
+	  <include refid="select-food"/>, num
+	  FROM (<include refid="select-food"/>, rownum num
+	    	FROM (<include refid="select-food"/> 
+	    	  	  FROM menupan_food
+	    	  	  WHERE ${column} LIKE '%' || #{ss} || '%' 
+	    	  	  AND 
+	  <!-- trim : 추가 , 제거
+	  					OR / AND
+	  			  OR / AND , ()
+	  	   prefix : 맨 앞에 추가
+	  	   suffix : 맨 뒤에 추가
+	  	   prefixOverrides : 맨 앞에 제거
+	  	   suffixOverrides : 맨 뒤에 제거
+	   -->
+	    	  	  <trim prefix="(" suffix=")" prefixOverrides="OR|AND">
+				    <foreach collection="fdArr" item="fd">
+				      <trim prefix="OR">
+				        <choose>
+				          <when test="fd == 'A'.toString()">
+				            type LIKE '%한식%'
+				          </when>
+				          <when test="fd == 'B'.toString()">
+				            type LIKE '%일식%'
+				          </when>
+				          <when test="fd == 'C'.toString()">
+				            type LIKE '%중식%'
+				          </when>
+				          <when test="fd == 'D'.toString()">
+				            type LIKE '%양식%'
+				          </when>
+				          <when test="fd == 'E'.toString()">
+				            type LIKE '%분식%'
+				          </when>
+				        </choose>
+				      </trim>
+				    </foreach>
+				  </trim>
+	    	  	  ORDER BY fno
+	  ))
+	  WHERE num BETWEEN #{start} AND #{end}
+	</select>
+	<select id="foodFindCount" parameterType="hashmap" resultType="int">
+	  SELECT COUNT(*) 
+	  FROM menupan_food
+	  WHERE ${column} LIKE '%' || #{ss} || '%' 
+	  AND 
+  	  <trim prefix="(" suffix=")" prefixOverrides="OR|AND">
+	    <foreach collection="fdArr" item="fd">
+	      <trim prefix="OR">
+	        <choose>
+	          <when test="fd == 'A'.toString()">
+	            type LIKE '%한식%'
+	          </when>
+	          <when test="fd == 'B'.toString()">
+	            type LIKE '%일식%'
+	          </when>
+	          <when test="fd == 'C'.toString()">
+	            type LIKE '%중식%'
+	          </when>
+	          <when test="fd == 'D'.toString()">
+	            type LIKE '%양식%'
+	          </when>
+	          <when test="fd == 'E'.toString()">
+	            type LIKE '%분식%'
+	          </when>
+	        </choose>
+	      </trim>
+	    </foreach>
+	  </trim>
 	</select>
 </mapper>

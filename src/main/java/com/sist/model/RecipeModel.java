@@ -1,8 +1,10 @@
 package com.sist.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
@@ -10,6 +12,7 @@ import com.sist.dao.FoodDAO;
 import com.sist.dao.RecipeDAO;
 import com.sist.vo.ChefVO;
 import com.sist.vo.FoodVO;
+import com.sist.vo.RecipeDetailVO;
 import com.sist.vo.RecipeVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -100,5 +103,28 @@ public class RecipeModel {
 	}
 	
 	// 상세보기
+	@RequestMapping("recipe/detail.do")
+	public String recipe_detail(HttpServletRequest request, HttpServletResponse response) {
+		// 사용자가 보내준 값 받기
+		String no = request.getParameter("no");
+		// 데이터베이스 읽기
+		RecipeDetailVO vo = RecipeDAO.recipeDetailData(Integer.parseInt(no));
+		
+		List<String> mList = new ArrayList<String>();
+		List<String> iList = new ArrayList<String>();
+		String[] datas = vo.getFoodmake().split("\n");
+		for (String s : datas) {
+			StringTokenizer st = new StringTokenizer(s, "^");
+			mList.add(st.nextToken());
+			iList.add(st.nextToken());
+		}
+		
+		request.setAttribute("vo", vo);
+		request.setAttribute("mList", mList);
+		request.setAttribute("iList", iList);
+		
+		request.setAttribute("main_jsp", "../recipe/detail.jsp");
+		return "../main/main.jsp";
+	}
 
 }

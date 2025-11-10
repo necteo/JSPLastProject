@@ -103,5 +103,94 @@ public class FoodDAO {
 		session.close();
 		return vo;
 	}
+
+	/*
+	 * <select id="foodFindData" resultType="FoodVO" parameterType="hashmap">
+		  <include refid="select-food"/>, num
+		  FROM (<include refid="select-food"/>, rownum num
+		    	FROM (<include refid="select-food"/> 
+		    	  	  FROM menupan_food
+		    	  	  WHERE ${column} LIKE '%' || #{ss} || '%' 
+		    	  	  AND 
+		    	  	  <trim prefix="(" suffix=")" prefixOverrides="OR|AND">
+					    <foreach collection="fdArr" item="fd">
+					      <trim prefix="OR">
+					        <choose>
+					          <when test="fd == 'A'.toString()">
+					            type LIKE '%한식%'
+					          </when>
+					          <when test="fd == 'B'.toString()">
+					            type LIKE '%일식%'
+					          </when>
+					          <when test="fd == 'C'.toString()">
+					            type LIKE '%중식%'
+					          </when>
+					          <when test="fd == 'D'.toString()">
+					            type LIKE '%양식%'
+					          </when>
+					          <when test="fd == 'E'.toString()">
+					            type LIKE '%분식%'
+					          </when>
+					        </choose>
+					      </trim>
+					    </foreach>
+					  </trim>
+		    	  	  ORDER BY fno
+		  ))
+		  WHERE num BETWEEN #{start} AND #{end}
+		</select>
+		<select id="foodFindCount" parameterType="hashmap" resultType="int">
+		  SELECT COUNT(*) 
+		  FROM menupan_food
+		  WHERE ${column} LIKE '%' || #{ss} || '%' 
+		  AND 
+	  	  <trim prefix="(" suffix=")" prefixOverrides="OR|AND">
+		    <foreach collection="fdArr" item="fd">
+		      <trim prefix="OR">
+		        <choose>
+		          <when test="fd == 'A'.toString()">
+		            type LIKE '%한식%'
+		          </when>
+		          <when test="fd == 'B'.toString()">
+		            type LIKE '%일식%'
+		          </when>
+		          <when test="fd == 'C'.toString()">
+		            type LIKE '%중식%'
+		          </when>
+		          <when test="fd == 'D'.toString()">
+		            type LIKE '%양식%'
+		          </when>
+		          <when test="fd == 'E'.toString()">
+		            type LIKE '%분식%'
+		          </when>
+		        </choose>
+		      </trim>
+		    </foreach>
+		  </trim>
+		</select>
+	 */
+	public static List<FoodVO> foodFindData(Map<String, Object> map) {
+		List<FoodVO> list = null;
+		try {
+			SqlSession session = ssf.openSession();
+			list = session.selectList("foodFindData", map);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public static int foodFindCount(Map<String, Object> map) {
+		int count = 0;
+		try {
+			SqlSession session = ssf.openSession();
+			count = session.selectOne("foodFindCount", map);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 	
 }

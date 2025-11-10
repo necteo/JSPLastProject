@@ -36,7 +36,16 @@
     </div>
     <!-- ****** Breadcumb Area End ****** -->
 
-    <!-- ****** Archive Area Start ****** -->
+    <!-- ****** Archive Area Start ******
+    	 1. 화면 이동
+    	 	데이터 전송 = 오라클 컬럼명 => page
+    	 	========= primary key
+    	 	예약
+    	 	  1. 맛집 번호
+    	 	  2. 월 일
+    	 	  3. 시간
+    	 	  4. 인원 
+    -->
     <section class="archive-area section_padding_80">
         <div class="container">
             
@@ -48,7 +57,9 @@
                     <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
                         <!-- Post Thumb -->
                         <div class="post-thumb">
-                            <img src="${vo.poster }" alt="">
+                        	<a href="../recipe/detail.do?no=${vo.no}">
+                            	<img src="${vo.poster }" alt="">
+                            </a>
                         </div>
                         <!-- Post Content -->
                         <div class="post-content">
@@ -79,7 +90,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="../recipe/detail.do?no=${vo.no}">
                                 <h4 class="post-headline">${vo.title }</h4>
                             </a>
                         </div>

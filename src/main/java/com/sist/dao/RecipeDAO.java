@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.sist.commons.CreateSqlSessionFactory;
 import com.sist.vo.ChefVO;
+import com.sist.vo.RecipeDetailVO;
 import com.sist.vo.RecipeVO;
 
 public class RecipeDAO {
@@ -85,6 +86,26 @@ public class RecipeDAO {
 	
 	// 쉐프 상세보기
 	// 레시피 상세보기
+	/*
+	 * <select id="recipeDetailData" resultType="com.sist.vo.RecipeDetailVO" parameterType="int">
+	    SELECT * FROM recipedetail
+	    WHERE no = #{no}
+	  </select>
+	 */
+	public static RecipeDetailVO recipeDetailData(int no) {
+		RecipeDetailVO vo = null;
+		try {
+			SqlSession session = ssf.openSession();
+			session.update("recipeHitIncrement", no);
+			session.commit();
+			vo = session.selectOne("recipeDetailData", no);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+	
 	// 레시피 등록 ****
 	// 레시피 검색
 
