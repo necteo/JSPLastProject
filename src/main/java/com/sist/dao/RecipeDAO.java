@@ -108,5 +108,50 @@ public class RecipeDAO {
 	
 	// 레시피 등록 ****
 	// 레시피 검색
+	/*
+	 *<select id="recipeFindData" resultType="RecipeVO" parameterType="hashmap">
+	    SELECT no, title, chef, poster, hit, likecount, replycount, num
+	    FROM (SELECT no, title, chef, poster, hit, likecount, replycount, rownum num
+	    	  FROM (SELECT no, title, chef, poster, hit, likecount, replycount
+	    	  		FROM recipe 
+	    	  		WHERE no IN (
+	    	  			SELECT no FROM recipe
+	    	  			INTERSECT
+	    	  			SELECT no FROM recipeDetail
+	    	  		) 
+	    	  		AND ${column} LIKE '%' || #{fd} || '%'
+	    	  		ORDER BY no))
+	    WHERE num BETWEEN #{start} and #{end}
+	  </select>
+	  <select id="recipeFindTotalPage" resultType="int">
+	    SELECT CEIL(COUNT(*) / 12) 
+	    FROM recipe 
+	    WHERE no IN (
+			SELECT no FROM recipe
+			INTERSECT
+			SELECT no FROM recipeDetail
+		)
+		AND ${column} LIKE '%' || #{fd} || '%'
+	  </select>
+	 */
+	public static List<RecipeVO> recipeFindData(Map<String, Object> map) {
+		SqlSession session = null;
+		List<RecipeVO> list = null;
+		try {
+			session = ssf.openSession();
+			list = session.selectList("recipeFindData", map);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public static int recipeFindTotalPage(Map<String, Object> map) {
+		SqlSession session = ssf.openSession();
+		int total = session.selectOne("recipeFindTotalPage", map);
+		session.close();
+		return total;
+	}
 
 }

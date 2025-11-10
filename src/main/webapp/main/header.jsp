@@ -152,7 +152,7 @@ $(function() {
                                         <c:if test="${sessionScope.id != null && sessionScope.admin == 'n'}">
                                         	<a class="dropdown-item" href="single.html">레시피 등록</a>
                                         </c:if>
-                                        <a class="dropdown-item" href="single.html">레시피 검색</a>
+                                        <a class="dropdown-item" href="../recipe/find.do">레시피 검색</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
