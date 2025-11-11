@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.jjim-mapper">
+  <!-- Jjim 확인 
+  	   rno : 맛집번호 / 레시피번호 / 상품번호
+  	   type :  1		2		 3
+  	   jno : 고유번호 = 취소
+  -->
+  <select id="jjimCheckCount" resultType="int" parameterType="JjimVO">
+    SELECT COUNT(*)
+    FROM all_jjim
+    WHERE id = #{id} AND rno = #{rno} AND type = #{type}
+  </select>
+  
+  <insert id="jjimInsert" parameterType="JjimVO">
+    INSERT INTO all_jjim VALUES(aj_jno_seq.nextval, #{type}, #{rno}, #{id}, SYSDATE)
+  </insert>
+  <!-- 
+  	 마이페이지 출력 = 취소
+  	 
+  	 class JjimVO
+  	 {
+  	 	int jno;
+  	 	String id;
+  	 	FoodVO fvo = new FoodVO()
+  	 }
+  	 SELECT jno,id,name,poster
+  	 FROM jjim,food
+  	 ResultSet rs = ps.executeQuery();
+  	 while(rs.next())
+  	 {
+  	 	JjimVO vo = new JjimVO();
+  	 	vo.setJno(rs.getInt("jno"));
+  	 	vo.setId(rs.getString("id"));
+  	 	vo.fvo.setName(rs.getString("name"));
+  	 	vo.fvo.setPoster(rs.getString("poster"));
+  	 }
+   -->
+  <resultMap type="JjimVO" id="jjimMap">
+  	<result property="fvo.name" column="name"/>
+  	<!-- fvo.setName(rs.getString("name")) -->
+  	<result property="fvo.poster" column="poster"/>
+  	<result property="fvo.fno" column="fno"/>
+  	<result property="fvo.address" column="address"/>
+  </resultMap>
+  <select id="jjimFoodListData" resultMap="jjimMap" parameterType="string">
+    SELECT jno, aj.type, rno, name, poster, address, fno
+    FROM all_jjim aj, menupan_food mf
+    WHERE aj.rno = mf.fno
+    AND id = #{id} AND aj.type = 1
+    ORDER BY jno DESC
+  </select>
+  
+  <delete id="jjimCancel" parameterType="int">
+    DELETE FROM all_jjim
+    WHERE jno = #{jno}
+  </delete>
+</mapper>

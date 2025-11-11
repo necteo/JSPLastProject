@@ -25,7 +25,7 @@
 	  SET hit = hit + 1
 	  <include refid="where-fno"/>
 	</update>
-	<select id="foodDetailData" resultType="FoodVO">
+	<select id="foodDetailData" resultType="FoodVO" parameterType="int">
 	  SELECT * FROM menupan_food
 	  <include refid="where-fno"/>
 	</select>

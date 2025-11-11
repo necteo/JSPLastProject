@@ -10,6 +10,11 @@
 <script type="text/javascript">
 $(function() {
 	$('#findBtn').click(function() {
+		commons(1)
+	})
+})
+$(function() {
+	$('#findBtn').click(function() {
 		const column = $('#column').val()
 		const fd = $('#fd').val()
 		$.ajax({
@@ -26,6 +31,15 @@ $(function() {
 		})
 	})
 })
+function change(page) {
+	commons(page)
+}
+function prev(page) {
+	commons(page)
+}
+function next(page) {
+	commons(page)
+}
 </script>
 </head>
 <body>

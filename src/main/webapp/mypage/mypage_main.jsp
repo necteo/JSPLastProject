@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
+<%--
     // 예시용 세션 데이터 (실제로는 로그인 시 session에 저장)
     String userName = (String) session.getAttribute("userName");
     String userEmail = (String) session.getAttribute("userEmail");
@@ -11,13 +11,13 @@
         userEmail = "hong@test.com";
         userPhone = "010-1234-5678";
     }
-%>
+--%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
-<link rel="stylesheet" href="css/mypage.css">
+<link rel="stylesheet" href="../css/mypage.css">
 <style>
 /*body {
   font-family: 'Noto Sans KR', sans-serif;
@@ -168,43 +168,21 @@
   <aside class="mypage-sidebar">
     <div class="profile">
       <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="profile">
-      <h3><%= userName %>님</h3>
+      <h3>${sessionScope.name}님</h3>
       <p>환영합니다 👋</p>
     </div>
     <ul class="menu">
       <li><a href="mypage.jsp" class="active">회원 정보</a></li>
+      <li><a href="../jjim/jjim_list.do">찜 내역</a></li>
       <li><a href="reservationList.jsp">예약 내역</a></li>
-      <li><a href="paymentList.jsp">결제 내역</a></li>
-      <li><a href="editProfile.jsp">정보 수정</a></li>
-      <li><a href="deleteAccount.jsp">회원 탈퇴</a></li>
+      <li><a href="#">결제 내역</a></li>
+      <li><a href="#">묻고답하기 내역</a></li>
+      <li><a href="#">회원 탈퇴</a></li>
     </ul>
   </aside>
 
   <!-- 🔹 메인 정보 영역 -->
-  <main class="mypage-main">
-    <h2>회원 정보</h2>
-    <div class="info-card">
-      <table>
-        <tr>
-          <th>이름</th>
-          <td><%= userName %></td>
-        </tr>
-        <tr>
-          <th>이메일</th>
-          <td><%= userEmail %></td>
-        </tr>
-        <tr>
-          <th>연락처</th>
-          <td><%= userPhone %></td>
-        </tr>
-        <tr>
-          <th>가입일</th>
-          <td>2024-05-12</td>
-        </tr>
-      </table>
-    </div>
-    <button class="edit-btn" onclick="location.href='editProfile.jsp'">정보 수정 ✏️</button>
-  </main>
+  <jsp:include page="${mypage_jsp}"></jsp:include>
 
 </div>
 

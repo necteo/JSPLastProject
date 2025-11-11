@@ -12,7 +12,9 @@ import org.json.simple.JSONObject;
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
 import com.sist.dao.FoodDAO;
+import com.sist.dao.JjimDAO;
 import com.sist.vo.FoodVO;
+import com.sist.vo.JjimVO;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -112,8 +114,21 @@ public class FoodModel {
 		request.setAttribute("vo", vo);
 		request.setAttribute("page", page);
 		request.setAttribute("link", link);
+		request.setAttribute("jCount", 0);
 		// => 스프링 : 전송 객체 / 사용자 요청값
 		// => request는 사용하지 않는다
+		JjimVO jvo = new JjimVO();
+		jvo.setRno(Integer.parseInt(fno));
+		jvo.setType(1);
+		HttpSession session = request.getSession();
+		String id = (String) session.getAttribute("id");
+		jvo.setId(id);
+		// 로그인된 상태 
+		if (id != null) {
+			  int jCount = JjimDAO.jjimCheckCount(jvo);
+			request.setAttribute("jCount", jCount);
+		}
+		   
 		request.setAttribute("main_jsp", "../food/detail.jsp");
 		return "../main/main.jsp";
 	}

@@ -12,7 +12,75 @@
   margin: 0px auto;
   width: 850px;
 }
+.img-link {
+	cursor: pointer;
+}
 </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+// ?rno=1&page=5 => ${param.rno}
+let likeCheck = false
+let rno = ${param.fno}
+let id = '${sessionScope.id}'
+// 전역변수
+$(function() {
+	if (id.length > 0) {
+		$.ajax({
+			type: 'post',
+			url: '../like/likeCheck.do',
+			data: {
+				'rno': rno,
+				"type": 1
+			},
+			success: function(result) {
+				if (result === 'OK') {
+					likeCheck = true
+					$('#likeBtn').attr('src', '../img/images/likeon.png')
+				} else {
+					likeCheck = false
+					$('#likeBtn').attr('src', '../img/images/likeoff.png')
+				}
+			},
+			error: function(err) {
+				console.log(err)
+			}
+		})
+	}
+	$('#likeBtn').click(function() {
+		if (likeCheck === true) {
+			$.ajax({
+				type: 'post',
+				url: '../like/likeOff.do',
+				data: {
+					"rno": rno,
+					"type": 1
+				},
+				success: function(result) {
+					if (result >= 0) {
+						likeCheck = false
+						$('#likeBtn').attr('src', '../img/images/likeoff.png')
+					}
+				}
+			})
+		} else {
+			$.ajax({
+				type: 'post',
+				url: '../like/likeOn.do',
+				data: {
+					"rno": rno,
+					"type": 1
+				},
+				success: function(result) {
+					if (result >= 0) {
+						likeCheck = true
+						$('#likeBtn').attr('src', '../img/images/likeon.png')
+					}
+				}
+			})
+		}
+	})
+})
+</script>
 </head>
 <body>
  <!-- ****** Breadcumb Area Start ****** -->
@@ -109,9 +177,18 @@
 	                </tr>
 	                <tr>
 	                 <td class="text-right">
-	                  <a href="#" class="btn btn-xs btn-danger">좋아요</a>
-	                  <a href="#" class="btn btn-xs btn-success">찜하기</a>
+	                 <c:if test="${sessionScope.id != null && sessionScope.admin == 'n'}">
+	                  <a href="#" class="btn btn-xs">
+	                    <img src="../img/images/likeoff.png" style="width: 25px; height: 25px" class="img-link" id="likeBtn">
+	                  </a>
+	                  <c:if test="${jCount == 0}">
+	                    <a href="../jjim/jjim_insert.do?rno=${vo.fno}&type=1&page=${page}" class="btn btn-xs btn-success">찜하기</a>
+	                  </c:if>
+	                  <c:if test="${jCount != 0}">
+	                    <span class="btn btn-xs btn-outline-success">찜하기</span>
+	                  </c:if>
 	                  <a href="#" class="btn btn-xs btn-info">예약하기</a>
+	                 </c:if>
 	                  <c:if test="${link != 1}">
 	                  	<a href="../food/list.do?page=${page}" class="btn btn-xs btn-warning">목록</a>
 	                  </c:if>

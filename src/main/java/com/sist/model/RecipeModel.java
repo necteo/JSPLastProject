@@ -1,5 +1,6 @@
 package com.sist.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,8 +89,9 @@ public class RecipeModel {
 		int count = RecipeDAO.recipeCount();
 		
 		// 브라우저 전송
+		DecimalFormat d = new DecimalFormat("#,###,###");
 		request.setAttribute("list", list);
-		request.setAttribute("count", count);
+		request.setAttribute("count", d.format(count));
 		request.setAttribute("curpage", curpage);
 		request.setAttribute("totalpage", totalpage);
 		request.setAttribute("startPage", startPage);
