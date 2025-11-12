@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-    String adminName = (String) session.getAttribute("adminName");
-    if (adminName == null) adminName = "관리자";
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -199,8 +195,8 @@ body {
   <header class="admin-header">
     <h1>관리자 페이지</h1>
     <div class="admin-user">
-      <span><%= adminName %>님 환영합니다</span>
-      <button onclick="location.href='logout.jsp'">로그아웃</button>
+      <span>${sessionScope.name}(${sessionScope.admin == 'y' ? '관리자' : '일반사용자'})님 환영합니다</span>
+      <button onclick="location.href='../member/logout.do'">로그아웃</button>
     </div>
   </header>
 
@@ -211,45 +207,11 @@ body {
       <li><a href="memberList.jsp">회원관리</a></li>
       <li><a href="orderList.jsp">주문관리</a></li>
       <li><a href="settings.jsp">예약관리</a></li>
-      <li><a href="boardManage.jsp">게시판관리</a></li>
+      <li><a href="boardManage.jsp">묻고답하기관리</a></li>
       <li><a href="stats.jsp">통계관리</a></li>
     </ul>
   </aside>
-
-  <!-- 🔹 메인 콘텐츠 -->
-  <main class="admin-main">
-    <h2>📊 대시보드</h2>
-
-    <div class="card-container">
-      <div class="card">
-        <h3>총 회원 수</h3>
-        <p>1,240명</p>
-      </div>
-      <div class="card">
-        <h3>오늘 주문 수</h3>
-        <p>58건</p>
-      </div>
-      <div class="card">
-        <h3>신규 리뷰</h3>
-        <p>32개</p>
-      </div>
-      <div class="card">
-        <h3>방문자 수</h3>
-        <p>2,430명</p>
-      </div>
-    </div>
-
-    <section class="recent-section">
-      <h3>📅 최근 등록된 회원</h3>
-      <table>
-        <tr><th>이름</th><th>이메일</th><th>가입일</th></tr>
-        <tr><td>홍길동</td><td>hong@test.com</td><td>2025-11-10</td></tr>
-        <tr><td>이영희</td><td>lee@test.com</td><td>2025-11-09</td></tr>
-        <tr><td>박철수</td><td>park@test.com</td><td>2025-11-09</td></tr>
-      </table>
-    </section>
-
-  </main>
+  <jsp:include page="${admin_jsp}"></jsp:include>
 </div>
 
 </body>

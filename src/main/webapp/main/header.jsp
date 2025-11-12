@@ -177,7 +177,7 @@ $(function() {
                                 </li>
                                 <c:if test="${sessionScope.id!=null && sessionScope.admin=='n' }">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">빠른 예약</a>
+                                    <a class="nav-link" href="../reserve/reserve_main.do">빠른 예약</a>
                                 </li>
                                 </c:if>
                                 <c:if test="${sessionScope.id!=null && sessionScope.admin=='n' }">

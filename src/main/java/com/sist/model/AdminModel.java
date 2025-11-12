@@ -11,7 +11,7 @@ public class AdminModel {
   @RequestMapping("admin/admin_main.do")
   public String mypage_main(HttpServletRequest request,HttpServletResponse response)
   {
-	  //request.setAttribute("main_jsp", "../admin/admin_main.jsp");
-	  return /*"../main/main.jsp"*/ "../admin/admin_main.jsp";
+	  request.setAttribute("admin_jsp", "../admin/admin_home.jsp");
+	  return "../admin/admin_main.jsp";
   }
 }

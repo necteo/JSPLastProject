@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.reserve-mapper">
+  <select id="reserveFoodListData" resultType="FoodVO" parameterType="string">
+    SELECT fno, name, poster, type
+    FROM (SELECT fno, name, poster, type
+    	  FROM menupan_food ORDER BY fno)
+    WHERE rownum &lt;= 100
+    AND type LIKE '%' || #{type} || '%'
+  </select>
+</mapper>
