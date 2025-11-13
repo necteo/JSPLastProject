@@ -17,6 +17,7 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="../css/mypage.css">
 <style>
 /*body {
@@ -174,7 +175,7 @@
     <ul class="menu">
       <li><a href="mypage.jsp" class="active">회원 정보</a></li>
       <li><a href="../jjim/jjim_list.do">찜 내역</a></li>
-      <li><a href="reservationList.jsp">예약 내역</a></li>
+      <li><a href="../mypage/mypage_reserve.do">예약 내역</a></li>
       <li><a href="#">결제 내역</a></li>
       <li><a href="#">묻고답하기 내역</a></li>
       <li><a href="#">회원 탈퇴</a></li>

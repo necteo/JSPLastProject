@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.admin-mapper">
+  <resultMap type="ReserveVO" id="reserveMap">
+    <result column="poster" property="fvo.poster"/>
+    <result column="name" property="fvo.name"/>
+    <result column="phone" property="fvo.phone"/>
+  </resultMap>
+  
+  <!-- admin -->
+  <select id="reserveAdminListData" resultMap="reserveMap">
+    SELECT no, ri.fno, id, rday, ri.time, inwon, ok, name, phone, poster
+    FROM reserve_info ri, menupan_food mf
+    WHERE ri.fno = mf.fno
+    ORDER BY no DESC
+  </select>
+  
+  <update id="reserveOk" parameterType="int">
+    UPDATE reserve_info
+    SET ok = 1
+    WHERE no = #{no}
+  </update>
+</mapper>

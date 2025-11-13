@@ -7,11 +7,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-$('.types').click(function() {
-	  const type = $(this).val()
-	  foodReader(type)
-})
 $(function() {
+	$('.types').click(function() {
+		  const type = $(this).val()
+		  foodReader(type)
+	})
 	$('.food-item').click(function() {
 		const fno = $(this).attr('data-fno')
 		const poster = $(this).attr('data-poster')
@@ -20,6 +20,17 @@ $(function() {
 		$('#food_poster').show()
 		$('#reserve_info').show()
 		$('#food_name').text(name)
+	  
+	    $('#rfno').val(fno)
+	
+	    // 화면 이동
+	    $.ajax({
+		    type: 'post',
+		    url: '../reserve/reserve_date.do',
+		    success: function(result) {
+		 	    $('#food_rdays').html(result)
+		    }
+	    })
 	})
 })
 </script>

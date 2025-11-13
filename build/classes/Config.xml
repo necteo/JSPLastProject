@@ -42,5 +42,7 @@
     <mapper resource="com/sist/mapper/like-mapper.xml"/>
     <mapper resource="com/sist/mapper/jjim-mapper.xml"/>
     <mapper resource="com/sist/mapper/reserve-mapper.xml"/>
+    <mapper resource="com/sist/mapper/mypage-mapper.xml"/>
+    <mapper resource="com/sist/mapper/admin-mapper.xml"/>
   </mappers>
 </configuration>

@@ -8,4 +8,29 @@
     WHERE rownum &lt;= 100
     AND type LIKE '%' || #{type} || '%'
   </select>
+  
+  <select id="reserveDateTimes" resultType="string" parameterType="int">
+    SELECT times FROM reserve_date
+    WHERE dno = #{dno}
+  </select>
+  
+  <select id="reserveTime" resultType="string" parameterType="int">
+    SELECT time FROM reserve_time
+    WHERE tno = #{tno}
+  </select>
+  
+  <!-- 
+  			NO      NOT NULL NUMBER       
+			ID               VARCHAR2(20) 
+			FNO              NUMBER       
+			RDAY    NOT NULL VARCHAR2(20) 
+			TIME    NOT NULL VARCHAR2(30) 
+			INWON   NOT NULL VARCHAR2(20) 
+			OK               NUMBER       
+			REGDATE          DATE
+   -->
+  <insert id="reserveInsert" parameterType="ReserveVO">
+    INSERT INTO reserve_info
+    VALUES(ri_no_seq.nextval, #{id}, #{fno}, #{rday}, #{time}, #{inwon}, #{ok}, SYSDATE)
+  </insert>
 </mapper>

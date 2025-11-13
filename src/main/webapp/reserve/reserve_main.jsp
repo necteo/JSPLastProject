@@ -71,12 +71,6 @@
         <div class="card h-100">
           <div class="card-header bg-info text-white text-center">예약일 정보</div>
           <div class="card-body text-center" id="food_rdays">
-            <p class="text-muted">날짜를 선택하세요</p>
-            <div class="d-flex justify-content-center flex-wrap gap-2">
-              <button class="btn btn-outline-info btn-sm" onclick="pickDay('2025-11-18')">2025-11-18</button>
-              <button class="btn btn-outline-info btn-sm" onclick="pickDay('2025-11-19')">2025-11-19</button>
-              <button class="btn btn-outline-info btn-sm" onclick="pickDay('2025-11-20')">2025-11-20</button>
-            </div>
           </div>
         </div>
       </div>
@@ -108,27 +102,21 @@
     </div>
 
     <div class="row g-4 mt-3">
-      <div class="col-md-4">
+      <div class="col-md-8">
         <div class="card">
           <div class="card-header bg-primary text-white text-center">시간 정보</div>
-          <div class="card-body text-center" id="reserve_time2">
-            <div class="d-flex justify-content-center gap-2 flex-wrap">
-              <button class="btn btn-outline-primary btn-sm">11:00</button>
-              <button class="btn btn-outline-primary btn-sm">12:00</button>
-              <button class="btn btn-outline-primary btn-sm">18:00</button>
+          <div class="card-body text-center">
+            <div class="d-flex justify-content-center gap-2 flex-wrap" id="reserve_time2">
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-info text-white text-center">인원 정보</div>
-          <div class="card-body text-center" id="reserve_inwon">
-            <div class="d-flex justify-content-center gap-2 flex-wrap">
-              <button class="btn btn-outline-success btn-sm" onclick="pickInwon(2)">2명</button>
-              <button class="btn btn-outline-success btn-sm" onclick="pickInwon(4)">4명</button>
-              <button class="btn btn-outline-success btn-sm" onclick="pickInwon(6)">6명</button>
+          <div class="card-body text-center">
+            <div class="d-flex justify-content-center gap-2 flex-wrap" id="reserve_inwon">
             </div>
           </div>
         </div>

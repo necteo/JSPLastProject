@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.mypage-mapper">
+  <resultMap type="ReserveVO" id="reserveMap">
+    <result column="poster" property="fvo.poster"/>
+    <result column="name" property="fvo.name"/>
+    <result column="phone" property="fvo.phone"/>
+  </resultMap>
+  
+  <!-- mypage -->
+  <select id="reserveMyPageListData" resultMap="reserveMap" parameterType="string">
+    SELECT no, ri.fno, id, rday, ri.time, inwon, ok, name, phone, poster
+    FROM reserve_info ri, menupan_food mf
+    WHERE ri.fno = mf.fno
+    AND id = #{id}
+    ORDER BY no DESC
+  </select>
+  
+  <delete id="reserveCancel" parameterType="int">
+    DELETE FROM reserve_info
+    WHERE no = #{no}
+  </delete>
+  
+  <resultMap type="ReserveVO" id="rMap">
+    <result column="poster" property="fvo.poster"/>
+    <result column="name" property="fvo.name"/>
+    <result column="phone" property="fvo.phone"/>
+    <result column="address" property="fvo.address"/>
+    <result column="parking" property="fvo.parking"/>
+    <result column="score" property="fvo.score"/>
+    <result column="type" property="fvo.type"/>
+  </resultMap>
+  
+  <select id="reserveOkData" resultMap="rMap" parameterType="int">
+    SELECT no, rday, ri.time, inwon, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS') dbday, 
+    	   poster, name, phone, address, parking, score, type
+    FROM reserve_info ri, menupan_food mf
+    WHERE ri.fno = mf.fno
+    AND no = #{no}
+  </select>
+</mapper>
