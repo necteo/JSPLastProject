@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/comment.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
 <style type="text/css">
 .detail_row{
   margin: 0px auto;
@@ -79,6 +82,22 @@ $(function() {
 			})
 		}
 	})
+	// 댓글 수정
+	let bCheck = false
+	$('.btns').click(function() {
+		const no = $(this).attr('data-no')
+		$('.forms').hide()
+		$('.btns').text('수정')
+		if (bCheck == false) {
+			bCheck = true
+			$('#form' + no).show()
+			$(this).val('취소')
+		} else {
+			bCheck = false
+			$('#form' + no).hide()
+			$(this).val('수정')
+		}
+	})
 })
 </script>
 </head>
@@ -119,6 +138,7 @@ $(function() {
                   <!-- Related Post Area -->
                     <div class="col-12 col-sm-12">
                             <div class="related-post-area section_padding_50">
+                            
                                 <div class="related-post-slider owl-carousel">
                                     <!-- Single Related Post-->
                                     <c:forTokens items="${vo.images}" delims="," var="img">
@@ -249,6 +269,50 @@ $(function() {
                  </div>
             </div>
         </div>
+        <!-- 댓글 -->
+        <h2>맛집 리뷰</h2>
+        <c:if test="${rCount == 0}">
+          <div class="text-center">
+            <h3>리뷰가 없습니다</h3>
+          </div>
+        </c:if>
+        <c:if test="${rCount > 0}">
+        <ul class="review-list" >
+          <c:forEach var="rvo" items="${reList}">
+          <li class="review-card">
+            <div class="review-header">
+              <div class="review-avatar">${fn:substring(rvo.name, 0, 1)}</div>
+              <div class="review-nick">${rvo.name}</div>
+              <div class="review-date">${rvo.dbday}</div>
+            </div>
+            <div class="review-text">${rvo.msg}</div>
+            <c:if test="${sessionScope.id == rvo.id}">
+              <div class="review-meta">
+                <div><input type="button" value="수정" class="btn-xs btn-primary btns" data-no="${rvo.no}"></div>
+                <div><a href="../review/review_delete.do?no=${rvo.no}&type=1&cno=${rvo.cno}&page${page}" class="btn btn-xs btn-danger">삭제</a>
+              </div>
+            </c:if>
+		    <form class="review-form forms" id="form${rvo.no}" method="post" action="../review/review_update.do" style="display: none">
+		      <input type="hidden" name="cno" value="${vo.fno}">
+		      <input type="hidden" name="page" value="${page}">
+		      <input type="hidden" name="type" value="1">
+		      <input type="hidden" name="no" value="${rvo.no}">
+		      <input type="text" name="msg" placeholder="리뷰입력" required value="${rvo.msg}">
+		      <button>수정</button>
+		    </form>
+          </li>
+          </c:forEach>
+        </ul>
+        </c:if>
+        <c:if test="${sessionScope.id != null}">
+	      <form class="review-form" method="post" action="../review/review_insert.do">
+	        <input type="hidden" name="cno" value="${vo.fno}">
+	        <input type="hidden" name="page" value="${page}">
+	        <input type="hidden" name="type" value="1">
+	        <input type="text" name="msg" placeholder="리뷰입력" required>
+	        <button>등록</button>
+	      </form>
+        </c:if>
     </section>
 </body>
 </html>

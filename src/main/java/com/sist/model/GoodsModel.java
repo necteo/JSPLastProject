@@ -141,6 +141,10 @@ public class GoodsModel {
 		
 		GoodsVO vo = GoodsDAO.goodsDetailData(map);
 		
+		String price = vo.getGoods_price();
+		price = price.replaceAll("[^0-9]", ""); // , 원
+		vo.setPrice(Integer.parseInt(price));
+		
 		request.setAttribute("vo", vo);
 		request.setAttribute("cno", cno);
 		request.setAttribute("page", page);

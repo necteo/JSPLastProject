@@ -8,72 +8,107 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <style type="text/css">
-.chef_row{
-  margin: 0px auto;
-  width: 850px;
-}
-#image {
-	width: 100%;
-	height: 350px;
-	border-radius: 20px;
-}
-#title {
-	font-size: 25px;
-	font-weight: bold;
-}
-#sub {
-	color: gray;
-	text-align: center;
-}
-#percent {
-	font-size: 25px;
-	color: pink;
-	font-weight: bold;
-}
-#price {
-	font-size: 25px;
-	font-weight: bold;	
-}
-#psub {
-	font-size: 12px;
-	color: #999;
-}
-#sel {
-	width: 100%;
-	height:	40px;
-}
-#cart, #buy, #go {
-	width: 150px;
-	height: 70px;
-	border: 2px solid green;
-	font-size: 20px;
-	font-weight: bold;
-	border-radius: 10px;
-	box-shadow: 5px 5px 5px #A9A9A9;
-	margin-left: 10px;
-}
-#cart {
-	background-color:  white;
-	color: green;
-}
-#buy {
-	background-color:  green;
-	color: white;
-}
-#go {
-	background-color:  blue;
-	color: white;
-}
+ .goods-detail {
+    margin-top: 50px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+  }
+  .goods-image {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  }
+  #title {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  #sub {
+    color: #666;
+    font-size: 15px;
+  }
+  #percent {
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  #price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  #psub {
+    color: #999;
+    font-size: 14px;
+  }
+  #total {
+    font-weight: bold;
+    font-size: 18px;
+    color: #16a085;
+  }
+  #cart, #buy, #go {
+    width: 25%;
+    margin-right: 1%;
+    height: 40px;
+    font-weight: bold;
+  }
+  #cart {
+    background-color: #f39c12;
+    color: #fff;
+    border: none;
+  }
+  #buy {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+  }
+  #go {
+    background-color: #95a5a6;
+    color: #fff;
+    border: none;
+  }
+  #cart:hover { background-color: #e67e22; }
+  #buy:hover { background-color: #c0392b; }
+  #go:hover { background-color: #7f8c8d; }
 </style>
+<link rel="stylesheet" href="../css/table.css">
+<link rel="stylesheet" href="../shadow/css/shadowbox.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="../shadow/js/shadowbox.js"></script>
+<script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
-function ok(cno, page) {
-	location.href="../goods/list.do?cno=" + cno + "&page=" + page;
+let sel = 0
+$(function() {
+	$('#sel').change(function() {
+		let account = $('#sel').val()
+		if (account !== "수량 선택") {
+		    sel = 1
+		    let price = $('#title').attr("data-price");
+		    let total = Number(price) * Number(account)
+		    $('#total').text(total.toLocaleString() + "원")
+		} else {
+			 sel = 0
+		}
+	})
+	$('#cart').click(function() {
+		if (sel == 0) {
+		  alert("수량을 선택하세요!!");
+		  return
+		}
+		let account = $('#sel').val()
+		$('#account').val(account)
+		$('#frm').submit()
+	})
+})
+function ok(cno,page) {
+	location.href = "../goods/list.do?cno=" + cno + "&page=" + page
 }
 </script>
 </head>
 <body>
 <!-- ****** Breadcumb Area Start ****** -->
-    <div class="breadcumb-area" style="background-image: url(../img/bg-img/breadcumb.jpg);">
+    <div class="breadcumb-area" style="background-image: url(../img/bg-img/breadcumb.jpg)">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12">
@@ -101,74 +136,70 @@ function ok(cno, page) {
 
     <!-- ****** Archive Area Start ****** -->
     <section class="archive-area section_padding_80">
-        <div class="container">
-            <div class="row chef_row">
-              <table class="table">
-                <tr>
-                  <td width="30%" class="text-center" rowspan="9">
-                    <img src="${vo.goods_poster}" id="image">
-                  </td>
-                  <td width="70%" class="text-center">
-                    <span id="title">${vo.goods_name}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="70%">
-                    <span id="sub">${vo.goods_sub }</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="70%">
-                    <span id="percent">${vo.goods_discount}%</span>
-                    &nbsp;<span id="price">${vo.goods_price}</span>
-                    <p id="aaa">
-                      <del id="psub">500,000원</del>
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="70%">
-                    <img src="https://recipe1.ezmember.co.kr/img/mobile/icon_delivery3.png"_width="20" height="20">
-                    <c:forEach var="i" begin="1" end="7">
-                      &nbsp;
-                    </c:forEach>
-                    <span id="del">${vo.goods_delivery}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="70%">
-                    <img src="https://recipe1.ezmember.co.kr/img/mobile/icon_point.png"_width="20" height="20">
-                    <c:forEach var="i" begin="1" end="7">
-                      &nbsp;
-                    </c:forEach>
-                    <span id="del">10% 적립</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="70%">
-                    <select id="sel" class="input-sm">
-                      <option>수량 선택</option>
-                      <c:forEach var="i" begin="1" end="10">
-                        <option value="${i}">${i}개</option>
-                      </c:forEach>
-                    </select>
-                  </td> 
-                </tr>
-                <tr>
-                  <td width="70%">
-                    총금액:<span id="total">${vo.goods_price}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="70%">
-                    <input type="button" value="장바구니" id="cart" style="float: left;">
-                    <input type="button" value="바로구매" id="buy" style="float: left;">
-                    <input type="button" value="목록" id="go" style="float: left;" onclick="ok(${cno}, ${page})">
-                  </td>
-                </tr>
-              </table>
-            </div>
-        </div>
-    </section>
+  <div class="container goods-detail">
+    <div class="row">
+      <div class="col-md-5 text-center">
+        <img src="${vo.goods_poster}" id="image" class="goods-image img-responsive">
+      </div>
+
+      <div class="col-md-7">
+        <table class="table table-bordered">
+          <tr>
+            <td colspan="2" class="text-center">
+              <span id="title" data-price="${vo.price}">${vo.goods_name}</span><br>
+              <span id="sub">${vo.goods_sub}</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span id="percent">${vo.goods_discount}%</span>
+              &nbsp;<span id="price">${vo.goods_price}</span>
+              <p><del id="psub">500,000원</del></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img src="https://recipe1.ezmember.co.kr/img/mobile/icon_delivery3.png" width="20" height="20">
+              &nbsp;<span id="del">${vo.goods_delivery}</span>
+            </td>
+            <td>
+              <img src="https://recipe1.ezmember.co.kr/img/mobile/icon_point.png" width="20" height="20">
+              &nbsp;<span id="del">10% 적립</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <select id="sel" class="form-control input-sm">
+                <option>수량 선택</option>
+                <c:forEach var="i" begin="1" end="10">
+                  <option value="${i}">${i}개</option>
+                </c:forEach>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-right">
+              총금액: <span id="total">${vo.goods_price}</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="text-center">
+             <c:if test="${sessionScope.id != null && sessionScope.admin == 'n'}">
+              <form method="post" action="../cart/cart_insert.do" id="frm">
+                <input type="hidden" name="gno" id="gno" value="${vo.no}">
+                <input type="hidden" name="account" id="account">
+                <input type="button" value="장바구니" id="cart" class="btn" data-no="${vo.no}" >
+              </form>
+              <input type="button" value="바로구매" id="buy" class="btn">
+             </c:if>
+              <input type="button" value="목록" id="go" class="btn" onclick="ok(${cno}, ${page})">
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
 </body>
 </html>

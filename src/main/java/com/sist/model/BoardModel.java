@@ -37,6 +37,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class BoardModel {
 	
 	@RequestMapping("board/list.do")
+	// board_list(int page)
 	public String board_list(HttpServletRequest request, HttpServletResponse response) {
 		// 사용자가 페이지 요청
 		String page = request.getParameter("page");

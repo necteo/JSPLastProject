@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.review-mapper">
+  <!-- 목록 출력 -->
+  <select id="reviewListData" resultType="ReviewVO" parameterType="hashmap">
+    SELECT no, cno, id, name, msg, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS') dbday
+    FROM review
+    WHERE cno = #{cno} AND type = #{type}
+  </select>
+      
+  <!-- 리뷰 추가 -->
+  <insert id="reviewInsert" parameterType="ReviewVO">
+    INSERT INTO review
+    VALUES(review_no_seq.nextval, #{cno}, #{type}, #{id}, #{name}, #{msg}, SYSDATE)
+  </insert>
+  
+  <!-- 리뷰 수정 -->
+  <update id="reviewUpdate" parameterType="ReviewVO">
+    UPDATE review
+    SET msg = #{msg}
+    WHERE no = #{no}
+  </update>
+  
+  <!-- 리뷰 삭제 -->
+  <delete id="reviewDelete" parameterType="int">
+    DELETE FROM review
+    WHERE no = #{no}
+  </delete>
+</mapper>

@@ -13,8 +13,10 @@ import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
 import com.sist.dao.FoodDAO;
 import com.sist.dao.JjimDAO;
+import com.sist.dao.ReviewDAO;
 import com.sist.vo.FoodVO;
 import com.sist.vo.JjimVO;
+import com.sist.vo.ReviewVO;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -128,6 +130,13 @@ public class FoodModel {
 			  int jCount = JjimDAO.jjimCheckCount(jvo);
 			request.setAttribute("jCount", jCount);
 		}
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("cno", Integer.parseInt(fno));
+		map.put("type", 1);
+		List<ReviewVO> reList = ReviewDAO.reviewListData(map);
+		request.setAttribute("rCount", reList.size());
+		request.setAttribute("reList", reList);
 		   
 		request.setAttribute("main_jsp", "../food/detail.jsp");
 		return "../main/main.jsp";
