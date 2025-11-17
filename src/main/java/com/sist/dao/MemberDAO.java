@@ -93,5 +93,24 @@ public class MemberDAO {
 		}
 		return vo;
 	}
+	
+	/*
+	 * <select id="memberInfoData" resultType="MemberVO" parameterType="string">
+	     SELECT id, name, sex, pwd, admin, post, addr1, addr2, phone
+	     FROM mvcMember
+	     WHERE id = #{id}
+	   </select>
+	 */
+	public static MemberVO memberInfoData(String id) {
+		MemberVO vo = null;
+		try {
+			SqlSession session = ssf.openSession();
+			vo = session.selectOne("memberInfoData", id);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
 
 }

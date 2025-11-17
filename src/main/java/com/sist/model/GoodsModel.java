@@ -8,10 +8,10 @@ import java.util.StringTokenizer;
 
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
-import com.sist.dao.FoodDAO;
 import com.sist.dao.GoodsDAO;
-import com.sist.vo.FoodVO;
+import com.sist.dao.MemberDAO;
 import com.sist.vo.GoodsVO;
+import com.sist.vo.MemberVO;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -151,6 +151,34 @@ public class GoodsModel {
 		
 		request.setAttribute("main_jsp", "../goods/detail.jsp");
 		return "../main/main.jsp";
+	}
+	
+	@RequestMapping("goods/buy.do")
+	public String goods_buy(HttpServletRequest request, HttpServletResponse response) {
+		String gno = request.getParameter("gno");
+		String account = request.getParameter("account");
+		HttpSession session = request.getSession();
+		String id = (String) session.getAttribute("id");
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", gno);
+		map.put("goods", "goods_all");
+		GoodsVO gvo = GoodsDAO.goodsDetailData(map);
+		MemberVO mvo = MemberDAO.memberInfoData(id);
+		
+		// cart.jsp에 데이터 전송
+		// Model => return에 있는 jsp가 받는다
+		// => include => 공유가 가능
+		request.setAttribute("mvo", mvo);
+		request.setAttribute("gvo", gvo);
+		request.setAttribute("account", account);
+		String strPrice = gvo.getGoods_price();
+		strPrice = strPrice.replaceAll("[^0~9]", "");
+		// 30,000원 30000  
+		int price = Integer.parseInt(strPrice);
+		int total = price * Integer.parseInt(account);
+		request.setAttribute("total", total);
+		return "../goods/cart.jsp";
 	}
 
 }
