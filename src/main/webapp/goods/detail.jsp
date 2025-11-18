@@ -203,7 +203,7 @@ function ok(cno,page) {
           <tr>
             <td colspan="2" class="text-center">
              <c:if test="${sessionScope.id != null && sessionScope.admin == 'n'}">
-              <form method="post" action="../cart/cart_insert.do" id="frm">
+              <form method="post" action="../cart/cart_insert.do" id="frm" style="display: inline">
                 <input type="hidden" name="gno" id="gno" value="${vo.no}">
                 <input type="hidden" name="account" id="account">
                 <input type="button" value="장바구니" id="cart" class="btn" data-no="${vo.no}" >

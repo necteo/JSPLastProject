@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.sist.commons.CreateSqlSessionFactory;
 import com.sist.vo.GoodsVO;
+import com.sist.vo.OrdersVO;
 
 public class GoodsDAO {
 	private static SqlSessionFactory ssf;
@@ -69,6 +70,57 @@ public class GoodsDAO {
 		SqlSession session = ssf.openSession();
 		GoodsVO vo = session.selectOne("goodsDetailData", map);
 		session.close();
+		return vo;
+	}
+	
+	public static void orderInsert(OrdersVO vo) {
+		try {
+			SqlSession session = ssf.openSession(true);
+			session.insert("orderInsert", vo);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * <select id="orderListData" parameterType="string" resultMap="orderMap">
+	    SELECT o.no, o.gno, goods_poster, goods_name, goods_price, account, TO_CHAR(regdate, 'YYYY-MM-DD') dbday
+	    FROM orders o, goods_all g
+	    WHERE o.gno = g.no
+	    AND id = #{id}
+	  </select>
+	 */
+	public static List<OrdersVO> orderListData(String id) {
+		List<OrdersVO> list = null;
+		try {
+			SqlSession session = ssf.openSession();
+			list = session.selectList("orderListData", id);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	/*
+	 * <select id="orderDetailData" parameterType="int" resultMap="orderMap">
+	    SELECT o.no, o.gno, goods_poster, goods_name, goods_price, account, TO_CHAR(regdate, 'YYYY-MM-DD') dbday,
+	    	   name, post, addr1, addr2, msg
+	    FROM orders o, goods_all g
+	    WHERE o.gno = g.no
+	    AND o.no = #{no}
+	  </select>
+	 */
+	public static OrdersVO orderDetailData(int no) {
+		OrdersVO vo = null;
+		try {
+			SqlSession session = ssf.openSession();
+			vo = session.selectOne("orderDetailData", no);
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return vo;
 	}
 

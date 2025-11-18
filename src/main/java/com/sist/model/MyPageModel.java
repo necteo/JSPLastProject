@@ -7,10 +7,12 @@ import org.json.simple.JSONObject;
 
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
+import com.sist.dao.GoodsDAO;
 import com.sist.dao.JjimDAO;
 import com.sist.dao.MyPageDAO;
 import com.sist.dao.ReserveDAO;
 import com.sist.vo.FoodVO;
+import com.sist.vo.OrdersVO;
 import com.sist.vo.ReserveVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -71,5 +73,32 @@ public class MyPageModel {
 			out.write(obj.toJSONString());
 		} catch (Exception e) { }
 	}
+    
+    @RequestMapping("mypage/buy_list.do")
+    public String buy_list(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		String id = (String) session.getAttribute("id");
+		List<OrdersVO> gList = GoodsDAO.orderListData(id);
+		request.setAttribute("gList", gList);
+		
+		request.setAttribute("mypage_jsp", "../mypage/buy_list.jsp");
+		request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
+		return "../main/main.jsp";
+    }
+    
+    @RequestMapping("mypage/buy_detail.do")
+    public String buy_detail(HttpServletRequest request, HttpServletResponse response) {
+    	String no = request.getParameter("no");
+    	OrdersVO vo = GoodsDAO.orderDetailData(Integer.parseInt(no));
+    	String price = vo.getGvo().getGoods_price();
+    	price = price.replaceAll("[^0-9]", "");
+    	int total = vo.getAccount() * Integer.parseInt(price);
+    	request.setAttribute("total", total);
+    	request.setAttribute("vo", vo);
+    	
+		request.setAttribute("mypage_jsp", "../mypage/buy_detail.jsp");
+		request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
+		return "../main/main.jsp";
+    }
     
 }

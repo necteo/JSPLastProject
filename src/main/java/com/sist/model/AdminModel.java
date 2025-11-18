@@ -35,4 +35,11 @@ public class AdminModel {
 		return "redirect:../admin/admin_reserve.do";
 	}
 	
+	@RequestMapping("admin/notice_list.do")
+	public String admin_notice_list(HttpServletRequest request,HttpServletResponse response) {
+
+		request.setAttribute("admin_jsp", "../admin/notice_list.jsp");
+		return "../admin/admin_main.jsp";
+	}
+	
 }

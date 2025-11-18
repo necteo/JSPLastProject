@@ -180,8 +180,6 @@
 
   <!-- 이전 / 다음 / 목록 -->
   <div class="detail-nav">
-    <a href="#" class="btn nav-btn primary">수정</a>
-    <a href="#" class="btn nav-btn primary">삭제</a>
     <a href="#" class="btn primary nav-btn">목록</a>
   </div>
 </section>

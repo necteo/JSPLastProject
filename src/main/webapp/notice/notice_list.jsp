@@ -111,6 +111,48 @@
   border-color: #d1d5db;
 }
 
+.detail-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn {
+  padding: 9px 14px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111827;
+  font-weight: 600;
+  transition: 0.12s ease;
+}
+.btn:hover {
+  background: #e5e7eb;
+}
+.btn.primary {
+  background: #2563eb;
+  color: white;
+}
+.btn.primary:hover {
+  background: #1e4ed8;
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .notice-detail-wrap {
+    margin: 12px;
+    padding: 18px;
+  }
+  .detail-meta {
+    gap: 6px;
+    font-size: 0.85rem;
+  }
+  .btn.nav-btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+}
+
 /* 반응형 */
 @media (max-width: 640px) {
   .col-writer, .col-view {
@@ -123,7 +165,10 @@
 <body>
 <section class="notice-table-wrap">
   <h2 class="notice-title">공지사항</h2>
-
+  <div class="detail-nav">
+    <a href="notice_insert.jsp" class="btn primary nav-btn">등록</a>
+  </div>
+  <div style="height: 10px"></div>
   <table class="notice-table">
     <thead>
       <tr>
@@ -140,7 +185,7 @@
       <tr>
         <td>15</td>
         <td><span class="badge badge-emergency">긴급</span></td>
-        <td class="title-cell"><a href="#">서버 장애 발생 안내</a></td>
+        <td class="title-cell"><a href="../notice/detail.do">서버 장애 발생 안내</a></td>
         <td>관리자</td>
         <td>2025-11-11</td>
         <td>342</td>

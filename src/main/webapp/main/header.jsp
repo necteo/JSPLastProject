@@ -167,7 +167,7 @@ $(function() {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="index.html">공지사항</a>
+                                        <a class="dropdown-item" href="../notice/list.do">공지사항</a>
                                         <a class="dropdown-item" href="../board/list.do">자유게시판</a>
                                         <c:if test="${sessionScope.id != null && sessionScope.admin == 'n'}">
                                         <a class="dropdown-item" href="single.html">묻고답하기</a>
