@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 .notice-form-wrap {
-  max-width: 980px;
+  width: 980px;
   margin: 20px auto;
   padding: 24px;
   background: #fff;
@@ -87,26 +87,18 @@
 .btn.primary:hover {
   background: #1e4ed8;
 }
-
-/* 모바일 */
-@media (max-width: 640px) {
-  .notice-form-wrap {
-    margin: 12px;
-    padding: 18px;
-  }
-}
-
 </style>
 </head>
 <body>
 <section class="notice-form-wrap">
   <h2 class="form-title">공지 등록</h2>
 
-  <form class="notice-form">
+  <form class="notice-form" method="post" action="../admin/notice_insert_ok.do"
+   enctype="multipart/form-data">
     <!-- 공지 종류 -->
     <div class="form-row">
       <label class="label">공지 종류</label>
-      <select name="type" class="input">
+      <select name="state" class="input">
         <option value="normal">일반</option>
         <option value="emergency">긴급</option>
         <option value="maintain">점검</option>
@@ -117,7 +109,7 @@
     <!-- 제목 -->
     <div class="form-row">
       <label class="label">제목</label>
-      <input type="text" name="title" class="input" required>
+      <input type="text" name="subject" class="input" required>
     </div>
 
     <!-- 내용 -->
@@ -129,13 +121,13 @@
     <!-- 첨부파일 -->
     <div class="form-row">
       <label class="label">첨부파일</label>
-      <input type="file" name="file" class="input file-input">
+      <input type="file" name="images" class="input file-input" multiple>
     </div>
 
     <!-- 버튼 -->
     <div class="form-actions">
       <button type="submit" class="btn primary">등록</button>
-      <button type="reset" class="btn">초기화</button>
+      <button type="reset" class="btn" onclick="javascript:history.back()">취소</button>
     </div>
   </form>
 </section>

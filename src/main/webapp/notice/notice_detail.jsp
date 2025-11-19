@@ -1,13 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <style type="text/css">
+.detail_row{
+  margin: 0px auto;
+  width: 850px;
+}
 .notice-detail-wrap {
-  max-width: 980px;
+  width: 980px;
   margin: 20px auto;
   padding: 24px;
   background: #fff;
@@ -123,66 +129,92 @@
 .btn.primary:hover {
   background: #1e4ed8;
 }
-
-/* 모바일 */
-@media (max-width: 640px) {
-  .notice-detail-wrap {
-    margin: 12px;
-    padding: 18px;
-  }
-  .detail-meta {
-    gap: 6px;
-    font-size: 0.85rem;
-  }
-  .btn.nav-btn {
-    font-size: 0.85rem;
-    padding: 8px 12px;
-  }
-}
-
 </style>
 </head>
 <body>
-<section class="notice-detail-wrap">
+ <!-- ****** Breadcumb Area Start ****** -->
+    <div class="breadcumb-area" style="background-image: url(../img/bg-img/breadcumb.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="bradcumb-title text-center">
+                        <h2>공지사항 상세보기</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="breadcumb-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <%-- 검색기 --%>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ****** Breadcumb Area End ****** -->
 
-  <!-- 제목 -->
-  <h2 class="detail-title">서버 점검 안내</h2>
-
-  <!-- 메타 영역 -->
-  <div class="detail-meta">
-    <span class="badge badge-maintain">점검</span>
-    <span class="meta-item">작성자: 관리자</span>
-    <span class="meta-item">등록일: 2025-11-10</span>
-    <span class="meta-item">조회수: 123</span>
-  </div>
-
-  <!-- 본문 -->
-  <article class="detail-content">
-    <p>
-      안녕하세요.<br>
-      아래 일정에 따라 시스템 점검이 진행될 예정입니다.<br><br>
-
-      - 점검 일시: 2025년 11월 12일 01:00 ~ 06:00<br>
-      - 영향 범위: 로그인 및 일부 서비스 이용 제한<br><br>
-
-      보다 안정적인 서비스를 제공하기 위한 조치이니 양해 부탁드립니다.
-    </p>
-  </article>
-
-  <!-- 첨부파일 -->
-  <div class="detail-attach">
-    <span class="attach-title">첨부파일</span>
-    <ul class="attach-list">
-      <li><a href="#">점검_안내문.pdf</a></li>
-      <li><a href="#">서비스중단_공지.png</a></li>
-    </ul>
-  </div>
-
-  <!-- 이전 / 다음 / 목록 -->
-  <div class="detail-nav">
-    <a href="#" class="btn primary nav-btn">목록</a>
-  </div>
-</section>
+    <!-- ****** Archive Area Start ****** -->
+    <section class="archive-area section_padding_80">
+        <div class="container">
+            <div class="row justify-content-center">
+				<section class="notice-detail-wrap">
+				
+				  <!-- 제목 -->
+				  <h2 class="detail-title">${vo.subject}</h2>
+				
+				  <!-- 메타 영역 -->
+				  <div class="detail-meta">
+				  	<c:choose>
+				      <c:when test="${vo.state == 'normal'}">
+				        <c:set var="state" value="일반"/>
+				      </c:when>
+				      <c:when test="${vo.state == 'emergency'}">
+				        <c:set var="state" value="긴급"/>
+				      </c:when>
+				      <c:when test="${vo.state == 'maintain'}">
+				        <c:set var="state" value="점검"/>
+				      </c:when>
+				      <c:when test="${vo.state == 'event'}">
+				        <c:set var="state" value="이벤트"/>
+				      </c:when>
+				    </c:choose>
+				    <span class="badge badge-${vo.state}">${state}</span>
+				    <span class="meta-item">작성자: ${vo.name}</span>
+				    <span class="meta-item">등록일: ${vo.dbday}</span>
+				    <span class="meta-item">조회수: ${vo.hit}</span>
+				  </div>
+				
+				  <!-- 본문 -->
+				  <article class="detail-content">
+				    <pre style="white-space: pre-wrap; background-color: white; border: none">${vo.content}</pre>
+				  </article>
+				
+				  <!-- 첨부파일 -->
+				  <c:if test="${vo.filecount > 0}">
+					<div class="detail-attach">
+					  <span class="attach-title">첨부파일</span>
+					  <ul class="attach-list">
+					    <c:forTokens items="${vo.filename}" delims="," var="files">
+					    	<li><a href="../notice/download.do?fn=${files}">${files}</a></li>
+					    </c:forTokens>
+					  </ul>
+					</div>
+				  </c:if>
+				
+				  <!-- 이전 / 다음 / 목록 -->
+				  <div class="detail-nav">
+				    <a href="../notice/list.do" class="btn primary nav-btn">목록</a>
+				  </div>
+				</section>
+			</div>
+		</div>
+	</section>
 
 </body>
 </html>
